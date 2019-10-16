@@ -7,10 +7,10 @@ password = 'password'
 db = 0
 
 
-class RedisHelper(object):
+class RedisUtil(object):
 
     def __init__(self):
-        super(RedisHelper, self).__init__()
+        super(RedisUtil, self).__init__()
         pool = redis.ConnectionPool(host=host, port=port, password=password, db=db)
         self.client = redis.Redis(connection_pool=pool)
 

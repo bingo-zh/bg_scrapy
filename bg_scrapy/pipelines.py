@@ -13,14 +13,17 @@ class BgScrapyPipeline(object):
         'JdCatsItem': {
             'name': 'JdCatsItem',
             'count': 10,
+            'data_list': []
         },
         'JdGoodsItem': {
             'name': 'JdGoodsItem',
             'count': 1000,
+            'data_list': []
         },
         'LiepinItem': {
             'name': 'LiepinItem',
             'count': 1000,
+            'data_list': []
         }
     }
 

@@ -25,19 +25,17 @@ class CwlItem(scrapy.Item):
 # 猎聘网
 class LiepinItem(scrapy.Item):
     _id = scrapy.Field()
-    url = scrapy.Field()
-    pub_type = scrapy.Field()
     title = scrapy.Field()
+    url = scrapy.Field()
     salary = scrapy.Field()
-    address = scrapy.Field()
+    location = scrapy.Field()
+    location_href = scrapy.Field()
     pub_date = scrapy.Field()
     qualifications = scrapy.Field()
-    main_message = scrapy.Field()
-    company = scrapy.Field()
-    compintro = scrapy.Field()
-    compdetail = scrapy.Field()
-    hunter_name = scrapy.Field()
-    hunter_company = scrapy.Field()
+    job_intro = scrapy.Field()
+    company_name = scrapy.Field()
+    company_href = scrapy.Field()
+    company_info = scrapy.Field()
 
 
 # 京东商品分类
