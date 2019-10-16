@@ -1,11 +1,39 @@
 # -*- coding: utf-8 -*-
 
 # Define here the models for your spider middleware
-#
-# See documentation in:
-# https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+import random
+
+from fake_useragent import UserAgent
 from scrapy import signals
+
+from .util.RedisUtil import RedisUtil
+
+
+class UADownloaderMiddleware(object):
+    key_name = 'UserAgent'
+    ua_list = []
+
+    def __init__(self):
+        redis = RedisUtil()
+        self.client = redis.get_client()
+
+        length = self.client.llen(self.key_name)
+        if length == 0:
+            try:
+                ua = UserAgent().data['browsers'].values()
+                for u in ua:
+                    self.ua_list.extend(u)
+                for u in self.ua_list:
+                    self.client.lpush(self.key_name, u)
+            except Exception as e:
+                print(e)
+
+        self.ua_list = self.client.lrange(self.key_name, 0, length)
+        redis.close_client()
+
+    def process_request(self, request, spider):
+        request.headers['User-Agent'] = random.choice(self.ua_list)
 
 
 class BgScrapySpiderMiddleware(object):

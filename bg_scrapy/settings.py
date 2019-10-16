@@ -45,9 +45,9 @@ DEFAULT_REQUEST_HEADERS = {
 #}
 
 # Enable or disable downloader middlewares
-#DOWNLOADER_MIDDLEWARES = {
-#    'bg_scrapy.middlewares.BgScrapyDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   'bg_scrapy.middlewares.UADownloaderMiddleware': 500,
+}
 
 # Enable or disable extensions
 #EXTENSIONS = {
@@ -55,9 +55,9 @@ DEFAULT_REQUEST_HEADERS = {
 #}
 
 # Configure item pipelines
-#ITEM_PIPELINES = {
-#    'bg_scrapy.pipelines.BgScrapyPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'bg_scrapy.pipelines.BgScrapyPipeline': 500,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 #AUTOTHROTTLE_ENABLED = True
