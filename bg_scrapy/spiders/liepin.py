@@ -9,7 +9,7 @@ from ..items import LiepinItem
 class LpSpiderSpider(CrawlSpider):
     name = 'liepin'
     allowed_domains = ['www.liepin.com']
-    #  java, 上海区域
+    #  key: java, dqs: 上海
     start_urls = ['https://www.liepin.com/zhaopin/?key={}&dqs={}'.format('java', '020')]
     custom_settings = {
         'DEFAULT_REQUEST_HEADERS': {
@@ -31,29 +31,47 @@ class LpSpiderSpider(CrawlSpider):
     )
 
     def parse_item(self, response):
-        resp = Selector(response)
+        r = Selector(response)
         item = LiepinItem()
-        # company_name = scrapy.Field()
-        # company_href = scrapy.Field()
-        # company_info = scrapy.Field()
 
-        title = resp.xpath('//div[@class="title-info" or @class="title-info "]/h1/text()').extract_first()
+        title = r.xpath('//div[@class="title-info" or @class="title-info "]/h1/@title').extract_first()
         url = response.url
-        salary = resp.xpath(
-            'normalize-space(//p[@class="job-item-title" or @class="job-main-title"]/text()').extract_first()
-        location = resp.xpath('normalize-space(//p[@class="basic-infor"]/span/text())').extract_first()
-        location_href = resp.xpath('//p[@class="basic-infor"]/span/a/@href').extract_first()
-        pub_date = resp.xpath('//p[@class="basic-infor"]/time/@title').extract_first()
-        qualifications_list = []
-        qualifications = resp.xpath('//div[@class="job-qualifications"]//span')
-        for q in qualifications:
-            qualifications_list.append(q.xpath('./text()').extract_first())
-        job_intro = resp.xpath(
-            'string(//div[contains(@class,"content") and contains(@class,"content-word")])').extract_first()
-        company_name = resp.xpath('//div[@class="company-logo"]/p/a/text()').extract_first()
-        company_href = resp.xpath('//div[@class="company-logo"]/p/a/@href').extract_first()
-        company_info = resp.xpath('//div[@class="company-logo"]/p/a/text()').extract_first()
+        salary = r.xpath(
+            'normalize-space(//p[@class="job-item-title" or @class="job-main-title"]/text())').extract_first()
+        location = r.xpath('string(//p[@class="basic-infor"]/span)').extract_first()
+        if location:
+            location = location.strip()
+        location_href = r.xpath('//p[@class="basic-infor"]/span/a/@href').extract_first()
+        pub_date = r.xpath('//p[@class="basic-infor"]/time/@title').extract_first()
+        qualifications = r.xpath('//div[@class="job-qualifications"]//span/text()').extract()  # 企业
+        if qualifications is None:
+            # 猎头
+            qualifications = r.xpath(
+                '//div[contains(@class,"resume") and contains(@class,"clearfix")]//span/text()').extract()
+        qualifications = ';'.join(qualifications)
 
+        job_intro = r.xpath(
+            'normalize-space(//div[contains(@class,"content") and contains(@class,"content-word")])').extract_first()
+        company_name = r.xpath('//div[@class="company-logo"]/p/a/text()').extract_first()
+        if company_name is None:
+            company_name = r.xpath('//p[@class="company-name"]/@title').extract_first()
+        company_href = r.xpath('//div[@class="company-logo"]/p/a/@href').extract_first()
+        company_info = r.xpath('//ul[@class="new-compintro" or @class="new-compdetail"]//li[position() < last()]')
+        li = []
+        for i in company_info:
+            v = i.xpath('string(.)').extract_first().strip()
+            li.append(v)
+        li = ';'.join(li)
 
-
+        item['title'] = title
+        item['url'] = url
+        item['salary'] = salary
+        item['location'] = location
+        item['location_href'] = location_href
+        item['pub_date'] = pub_date
+        item['qualifications'] = qualifications
+        item['job_intro'] = job_intro
+        item['company_name'] = company_name
+        item['company_href'] = company_href
+        item['company_info'] = li
         yield item

@@ -3,7 +3,7 @@
 
 import pymongo
 
-host = 'localhost'
+host = 'host'
 port = 27017
 username = 'username'
 password = 'password'

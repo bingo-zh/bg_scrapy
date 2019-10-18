@@ -56,7 +56,7 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 ITEM_PIPELINES = {
-   'bg_scrapy.pipelines.BgScrapyPipeline': 500,
+   # 'bg_scrapy.pipelines.BgScrapyPipeline': 500,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

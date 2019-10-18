@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import redis
 
-host = 'localhost'
+host = 'host'
 port = 6379
 password = 'password'
 db = 0
