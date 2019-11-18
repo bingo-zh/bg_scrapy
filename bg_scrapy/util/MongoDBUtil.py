@@ -3,11 +3,11 @@
 
 import pymongo
 
-host = 'host'
+host = '47.74.51.196'
 port = 27017
-username = 'username'
-password = 'password'
-db = 'db'
+username = 'uutips'
+password = 'uutips_123345'
+db = 'uutips'
 url = 'mongodb://{}:{}@{}:{}/{}'.format(username, password, host, port, db)
 
 

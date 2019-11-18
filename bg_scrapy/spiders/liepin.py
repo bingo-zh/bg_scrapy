@@ -10,7 +10,7 @@ class LpSpiderSpider(CrawlSpider):
     name = 'liepin'
     allowed_domains = ['www.liepin.com']
     #  key: java, dqs: 上海
-    start_urls = ['https://www.liepin.com/zhaopin/?key={}&dqs={}'.format('java', '020')]
+    start_urls = ['https://www.liepin.com/zhaopin/?key={}&dqs={}'.format('财务', '020')]
     custom_settings = {
         'DEFAULT_REQUEST_HEADERS': {
             'Accept': 'text/html,application/xhtml+xml,application/xml'
